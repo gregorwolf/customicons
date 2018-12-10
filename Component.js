@@ -2,8 +2,9 @@ sap.ui.define([
 	"sap/ui/core/Component",
 	"sap/m/Button",
 	"sap/m/Bar",
+	"sap/ui/core/IconPool",
 	"sap/m/MessageToast"
-], function (Component, Button, Bar, MessageToast) {
+], function (Component, Button, Bar, IconPool, MessageToast) {
 
 	return Component.extend("com.sap.sapmentors.customicons.Component", {
 
@@ -20,16 +21,47 @@ sap.ui.define([
 			 * Add item to the header
 			 */
 			rendererPromise.then(function (oRenderer) {
-				oRenderer.addHeaderItem({
-					icon: "sap-icon://add",
-					tooltip: "Add bookmark",
-					press: function () {
-						MessageToast.show("This SAP Fiori Launchpad has been extended to improve your experience");
-					}
-				}, true, true);
+	        	var oCustomFontConfig = { 
+	        		fontFamily: "fa-solid-900", 
+	        		collectionName: "fasolid", 
+	        		fontURI: "/sap/fiori/customicons/assets/" 
+	        	};
+	        	IconPool.registerFont(oCustomFontConfig);	
+
+	        	var oSAPFontConfig = { 
+	        		fontFamily: "fa-solid-900", 
+	        		fontURI: "/sap/fiori/customicons/assets/" 
+	        	};
+	        	IconPool.registerFont(oSAPFontConfig);	
+
+	        	var symbols = [
+	         			{ name: "user",       id: "meAreaHeaderButton" },
+	         			{ name: "angle-left", id: "backBtn"  },
+	        			{ name: "home",       id: "homeBtn" },
+	        			{ name: "apple-alt",  id: "openCatalogBtn" },
+	        			{ name: "cog",        id: "userSettingsBtn" },
+	        			{ name: "pen",        id: "ActionModeBtn" },
+	        			{ name: "info",       id: "aboutBtn" }
+				];
+		        var sURI;
+	        	for (var i in symbols) {
+	        		// var fontFace = "Font Awesome 5 Free";
+	        		if(symbols[i].name) {
+		        		sURI = IconPool.getIconURI(symbols[i].name, oCustomFontConfig.collectionName);
+		        		if(symbols[i].id) {
+				        	var oButton = sap.ui.getCore().byId(symbols[i].id);
+				        	if(oButton) {
+				        		oButton.setIcon(sURI);
+				        	} else  {
+				        		jQuery.sap.log.info("Can't access " + symbols[i].id);
+				        	}
+		        		}
+	        		}
+	        	}
 			});
 
 		},
+
 
 		/**
 		 * Returns the shell renderer instance in a reliable way,
