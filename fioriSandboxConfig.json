@@ -1,0 +1,9 @@
+{
+	"applications": {},
+	"bootstrapPlugins": {
+		"customicons": {
+			"component": "com.sap.sapmentors.customicons",
+			"url": "../../../../../"
+		}
+	}
+}
